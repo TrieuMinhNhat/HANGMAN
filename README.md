@@ -13,7 +13,7 @@
 ## Quá trình hoàn thành
 Để làm được project này, mình đã tham khảo code mẫu hangman mà không có đồ họa, sau đó lên ý tưởng, tìm ảnh, chữ rồi chèn vào các hàm để chúng chạy theo trật tự logic. Mình cũng đã kết hợp thư viện SDL2, SDL_mixer, SDL_image và SDL_ttf để tạo thành một trò chơi có đồ họa 2D.
 ## Lý do làm HangMan
-* Hang man game là một game hữu ích.
+* Hangman game là một game hữu ích.
 
 	Mặc dù khá nhàm chán, nhưng Hangman game rất phù hợp với những bạn muốn học thêm từ vựng. Ngoài Game còn có thể tích hợp vào việc giảng dạy trên lớp để học sinh có thể tìm ra từ bí mật, từ đó học sẽ nhớ được những từ mới nhanh hơn bằng một cách sinh động.
 * Phù hợp với khả năng lập trình của bản thân	
