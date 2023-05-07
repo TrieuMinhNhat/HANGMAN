@@ -29,7 +29,7 @@
 	1. Clone repo này về máy tính cá nhân.
 	2. Tạo một solution và add tất cả các file trong **include** và **src** vào đó. Tải tất cả hình ảnh âm thanh, font vào chung file với solution.
 	3. Cài SDL2 cho solution theo hướng dẫ tại [https://lazyfoo.net/tutorials/SDL/01_hello_SDL/index.php].
-	4. Run solution va chơi game thôi.
+	4. Run solution và chơi game thôi.
 ## Các nguồn đã tham khảo
 		[https://lazyfoo.net/tutorials/SDL/index.php]
 		[https://en.wikipedia.org/wiki/Simple_DirectMedia_Layer]
