@@ -13,7 +13,6 @@ void pressAnyKeyToContinue();
 void renderTextCentered(SDL_Renderer* grenderer, TTF_Font* font, const char* text, SDL_Window* gwindow);
 void handleButtonClick(SDL_Rect playButtonRect);
 bool waitForButtonClick(SDL_Rect buttonRect);
-void pressEnterToContinue();
 void playSound(bool correct);
 void playMusic(const char* filePath, int loops);
 void intro(SDL_Renderer*& renderer);

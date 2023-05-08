@@ -112,15 +112,6 @@ string generateHiddenCharacters(string answerWord) {
 }
 char getInputCharacter(SDL_Renderer*& grenderer) {
     SDL_Event event;
-
-    //while (true) {
-   /* SDL_Texture* textTexture = LoadFontTexture(grenderer, "intro.ttf", 80, "Please enter your guess! ", { 255, 165, 0, 255 });
-    int textureWidth, textureHeight;
-    SDL_QueryTexture(textTexture, NULL, NULL, &textureWidth, &textureHeight);
-    SDL_Rect textRect = { (window_width - textureWidth) / 2, (window_height - textureHeight) / 2, textureWidth, textureHeight };
-    SDL_RenderCopy(grenderer, textTexture, NULL, &textRect);
-    SDL_RenderPresent(grenderer);*/
-    //SDL_RenderClear(grenderer);
      string input = " ";
     char text = ' ';
     SDL_StartTextInput();
@@ -128,12 +119,10 @@ char getInputCharacter(SDL_Renderer*& grenderer) {
     while (!quit) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
-                // User closed the window, exit the loop
                 quit=true;
             }
             else if (event.type == SDL_KEYDOWN) {
                 if (event.key.keysym.sym == SDLK_RETURN and text!=' ') {
-                    // User pressed Enter, exit the loop
                     quit = true;
                 }
                 else if (event.key.keysym.sym >= SDLK_a && event.key.keysym.sym <= SDLK_z) {
@@ -146,33 +135,17 @@ char getInputCharacter(SDL_Renderer*& grenderer) {
                     // Render new text
                      text = event.key.keysym.sym;
                     string word_str = string(1, text);
-                    SDL_Texture* textT = LoadFontTexture(grenderer, "intro.ttf", 100, word_str.c_str(), { 0, 0, 0, 0 });
+                    SDL_Texture* textT = LoadFontTexture(grenderer, "secretword.ttf", 100, word_str.c_str(), { 0, 0, 0, 0 });
                     int textWidth, textHeight;
                     SDL_QueryTexture(textT, NULL, NULL, &textWidth, &textHeight);
-                    SDL_Rect textrect = { ((window_width) / 2) - (textWidth / 2), ((window_height) / 2) + 25, textWidth, textHeight };
+                    SDL_Rect textrect = { ((window_width) / 2) - (textWidth / 2), ((window_height) / 2) + 55, textWidth, textHeight };
                     SDL_RenderCopy(grenderer, textT, NULL, &textrect);
                     SDL_RenderPresent(grenderer);
                     SDL_DestroyTexture(textT);
-
-                    // Append new character to input text
                     input += text;
                 }
             }
         }
-        //}
-       //std::cout << text;
-       /* string word_str = string(1, text);
-        SDL_Texture* textT = LoadFontTexture(grenderer, "intro.ttf", 100, word_str.c_str(), { 0, 0, 0, 0 });
-        int textWidth, textHeight;
-        SDL_QueryTexture(textT, NULL, NULL, &textWidth, &textHeight);
-        SDL_Rect textrect = { ((window_width) / 2) - 58, ((window_height) / 2) + 10, textWidth, textHeight };
-        SDL_RenderCopy(grenderer, textT, NULL, &textrect);
-        SDL_RenderPresent(grenderer);*/
-        //pressAnyKeyToContinue();
-        //SDL_DestroyTexture(textT);
-        //SDL_RenderPresent(grenderer);
-        
-
     }
    std::cout << text;
     return tolower(text);

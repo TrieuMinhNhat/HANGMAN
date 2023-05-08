@@ -79,6 +79,7 @@ void init (SDL_Window* &gWindow, SDL_Renderer* &gRenderer)
 	}
 
 }
+
 SDL_Texture* loadTexture(std::string path, SDL_Renderer* &gRenderer)
 {
 	//The final texture
@@ -105,6 +106,7 @@ SDL_Texture* loadTexture(std::string path, SDL_Renderer* &gRenderer)
 
 	return newTexture;
 }
+
 void pressAnyKeyToContinue() {
 	SDL_Event ev;
 	while (SDL_WaitEvent(&ev)) {
@@ -116,6 +118,7 @@ void pressAnyKeyToContinue() {
 		}
 	}
 }
+
 SDL_Texture* LoadFontTexture(SDL_Renderer* grenderer, std::string fontFilePath, int fontSize, const char* text, SDL_Color color) {
 	// load the font
 	TTF_Font* font = TTF_OpenFont(fontFilePath.c_str(), fontSize);
@@ -148,6 +151,7 @@ SDL_Texture* LoadFontTexture(SDL_Renderer* grenderer, std::string fontFilePath, 
 	// return the texture
 	return texture;
 }
+
 void renderTextCentered(SDL_Renderer* grenderer, TTF_Font* font, const char* text, SDL_Window*& gwindow) {
 	// create a surface from the font and text
 	SDL_Color color = { 0, 0, 0 }; // black color
@@ -176,6 +180,7 @@ void renderTextCentered(SDL_Renderer* grenderer, TTF_Font* font, const char* tex
 	SDL_FreeSurface(textSurface);
 	SDL_DestroyTexture(textTexture);
 }
+
 void handleButtonClick(SDL_Rect buttonRect) {
 	SDL_Event event;
 	bool quit = false;
@@ -185,7 +190,7 @@ void handleButtonClick(SDL_Rect buttonRect) {
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_QUIT) {
 				quit = true;
-			}
+			} 
 			else if (event.type == SDL_MOUSEBUTTONDOWN) {
 				int mouseX, mouseY;
 				SDL_GetMouseState(&mouseX, &mouseY);
@@ -195,12 +200,14 @@ void handleButtonClick(SDL_Rect buttonRect) {
 				}
 			}
 		}
+		//playMusic("backg.wav", -1);
 	}
 }
 
-bool waitForButtonClick(SDL_Rect buttonRect) {
+bool waitForButtonClick(SDL_Rect buttonRect, SDL_Renderer*& renderer) {
 	SDL_Event event;
 	bool quit = false;
+	bool mouseOverButton = false;
 	memset(&event, 0, sizeof(SDL_Event));
 	while (!quit) {
 		while (SDL_PollEvent(&event)) {
@@ -212,18 +219,42 @@ bool waitForButtonClick(SDL_Rect buttonRect) {
 				SDL_GetMouseState(&mouseX, &mouseY);
 				if (mouseX >= buttonRect.x && mouseX < buttonRect.x + buttonRect.w &&
 					mouseY >= buttonRect.y && mouseY < buttonRect.y + buttonRect.h) {
+					playMusic("click.wav", 0);
 					return true;
+				}
+			}
+			else if (event.type == SDL_MOUSEMOTION) {
+				int mouseX, mouseY;
+				SDL_GetMouseState(&mouseX, &mouseY);
+				if (mouseX >= buttonRect.x && mouseX < buttonRect.x + buttonRect.w &&
+					mouseY >= buttonRect.y && mouseY < buttonRect.y + buttonRect.h) {
+					if (!mouseOverButton) {
+						mouseOverButton = true;
+						for (int i = 2; i < 7; i++) {
+							SDL_Rect outline = getSDLRect(buttonRect.x -6 + i, buttonRect.y-6 + i, buttonRect.w +2+  i, buttonRect.h+5+ i);
+							SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
+							SDL_RenderDrawRect(renderer, &outline);
+							SDL_RenderPresent(renderer);
+						}
+					}
+				}
+				else {
+					if (mouseOverButton) {
+						mouseOverButton = false;
+						for (int i = 2; i < 7; i++) {
+							SDL_Rect fillRect = getSDLRect(buttonRect.x-6+i, buttonRect.y-6+i, buttonRect.w +2+  i, buttonRect.h +5+ i);
+							SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+							SDL_RenderDrawRect(renderer, &fillRect);
+							SDL_RenderPresent(renderer);
+						}
+					}
 				}
 			}
 		}
 	}
 	return false;
 }
-void pressEnterToContinue() {
-	std::cout << "Press Enter to continue...";
-	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-	std::cin.get();
-}
+
 void playSound(bool correct) {
 	// Initialize SDL_mixer
 	Mix_Init(MIX_INIT_MP3);
@@ -247,73 +278,13 @@ void playSound(bool correct) {
 	Mix_Quit();
 }
 
-/*void scrollText(SDL_Renderer*& renderer, const std::string& fontPath, int fontSize, const std::string& text, int scrollSpeed, int startX, int startY) {
-	// Load the font texture
-	SDL_Texture* fontTexture = loadTexture(fontPath, renderer);
-
-	// Set the font size and color
-	TTF_Font* font = TTF_OpenFont(fontPath.c_str(), fontSize);
-	SDL_Color color = { 255, 255, 255, 255 };
-
-	// Calculate the total width of the text
-	int textWidth, textHeight;
-	TTF_SizeText(font, text.c_str(), &textWidth, &textHeight);
-
-	// Calculate the number of frames needed to fully scroll the text
-	int numFrames = textWidth / scrollSpeed;
-	if (textWidth % scrollSpeed > 0) {
-		numFrames++;
-	}
-
-	// Create a timer to update the animation
-	int currentFrame = 0;
-	SDL_TimerCallback timerCallback = [](Uint32 interval, void* param) -> Uint32 {
-		SDL_Renderer* renderer = static_cast<SDL_Renderer*>(param);
-
-		// Display the current frame
-		int x = startX - currentFrame * scrollSpeed;
-		int y = startY;
-		SDL_Rect sourceRect = { currentFrame * scrollSpeed, 0, textWidth - currentFrame * scrollSpeed, textHeight };
-		SDL_Rect destRect = { x, y, textWidth - currentFrame * scrollSpeed, textHeight };
-		SDL_RenderClear(renderer);
-		SDL_RenderCopy(renderer, fontTexture, &sourceRect, &destRect);
-		SDL_RenderPresent(renderer);
-
-		// Move to the next frame
-		currentFrame++;
-		if (currentFrame >= numFrames) {
-			currentFrame = 0;
-		}
-
-		return interval;
-	};
-	SDL_TimerID timerID = SDL_AddTimer(16, reinterpret_cast<SDL_TimerCallback>(timerCallback), renderer);
-
-	// Wait for the user to quit
-	bool quit = false;
-	SDL_Event event;
-	while (!quit) {
-		while (SDL_PollEvent(&event)) {
-			if (event.type == SDL_QUIT) {
-				quit = true;
-			}
-		}
-		SDL_Delay(10);
-	}
-
-	// Clean up resources
-	SDL_RemoveTimer(timerID);
-	TTF_CloseFont(font);
-	SDL_DestroyTexture(fontTexture);
-}*/
-
 void intro(SDL_Renderer*& renderer) {
 	SDL_Texture* intro = loadTexture("hangman.jpg", renderer);
 	SDL_Texture* playbutton = loadTexture("play.png", renderer);
-	SDL_Texture* tex = LoadFontTexture(renderer, "intro.ttf", 30, "Click the button above to play!", { 0, 0, 255,255 });
+	SDL_Texture* tex = LoadFontTexture(renderer, "secretword.ttf", 35, "Click the button above to play!", { 0, 0, 255,255 });
 	int textWidth, textHeight;
 	SDL_QueryTexture(tex, NULL, NULL, &textWidth, &textHeight);
-	SDL_Rect texrect = getSDLRect(window_width / 2 + 0, window_height / 2 + 85, textWidth, textHeight);
+	SDL_Rect texrect = getSDLRect(window_width / 2 -170, window_height / 2 + 85, textWidth, textHeight);
 
 	SDL_QueryTexture(playbutton, NULL, NULL, &textWidth, &textHeight);
 	SDL_Rect playbuttonrect = getSDLRect(window_width / 2 + 90, window_height / 2 - 40, textWidth / 5, textHeight / 5);
@@ -321,9 +292,11 @@ void intro(SDL_Renderer*& renderer) {
 	SDL_RenderCopy(renderer, playbutton, NULL, &playbuttonrect);
 	SDL_RenderCopy(renderer, tex, NULL, &texrect);
 	SDL_RenderPresent(renderer);
-	handleButtonClick(playbuttonrect);
+	//playMusic("backg.wav", 0);
+	//handleButtonClick(playbuttonrect);
+	//playMusic("backg.wav", 0);
+	if (waitForButtonClick(playbuttonrect, renderer));
 }
-
 
 void playMusic(const char* filePath, int loops) {
 	// Initialize SDL_mixer

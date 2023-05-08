@@ -20,29 +20,16 @@ static SDL_Window* window = NULL;
 static SDL_Renderer* renderer = NULL;
 int main(int argc, char* args[]) {
 	init(window, renderer);
-	/*SDL_Texture* intro = loadTexture("hangman.jpg", renderer);
-    SDL_Texture* playbutton = loadTexture("play.png", renderer);
-    SDL_Texture* tex = LoadFontTexture(renderer, "intro.ttf", 30, "Click the button above to play!", { 0, 0, 255,255});
-    int textWidth, textHeight;
-    SDL_QueryTexture(tex, NULL, NULL, &textWidth, &textHeight);
-    SDL_Rect texrect = getSDLRect(window_width / 2 + 0, window_height / 2+85, textWidth, textHeight);
-    
-    SDL_QueryTexture(playbutton, NULL, NULL, &textWidth, &textHeight);
-    SDL_Rect playbuttonrect = getSDLRect(window_width/2+90,window_height/2-40, textWidth/5, textHeight/5);
-	SDL_RenderCopy(renderer, intro, NULL, NULL);
-    SDL_RenderCopy(renderer, playbutton, NULL, &playbuttonrect);
-    SDL_RenderCopy(renderer, tex, NULL, &texrect);
-	SDL_RenderPresent(renderer);
-    handleButtonClick(playbuttonrect);*/
+	
     intro(renderer);
-
-    //createWinAnimation(renderer);
+   
     bool iscontinue = true;
-
+    
     while (iscontinue) {
         SDL_RenderClear(renderer);
         srand((int)time(0));
-        string vocabularyFile = "Ogden_Picturable_200.txt";
+        //string vocabularyFile = "Ogden_Picturable_200.txt";
+        string vocabularyFile = "words.txt";
         //string vocabularyFile = "data/ErrorOpenFileTest.txt";
         //string vocabularyFile = "data/EmptyTest.txt";
         vector<string> wordList;
@@ -55,7 +42,6 @@ int main(int argc, char* args[]) {
         }
         //cout << "Chosen word: " << word << endl;
         // string secretWord(word.length(), '-');
-
         string secretWord = generateHiddenCharacters(word);
         int incorrectGuess = 0;
         string correctChars = "";

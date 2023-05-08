@@ -13,5 +13,5 @@ void printScreen(const std::string& word, const std::string& secretWord, const s
 SDL_Rect getSDLRect(int x, int y, int width, int height);
 
 void createWinAnimation(SDL_Renderer*& renderer);
+
 void outro(SDL_Renderer* renderer, std::string word, std::string secrectWord, bool& iscontinue);
-//void scrollTextures(SDL_Renderer* renderer, const std::vector<std::string>& imagePaths, int scrollSpeed);

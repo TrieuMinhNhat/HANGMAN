@@ -66,24 +66,24 @@ void printStats(const std::string& word, const std::string& secretWord,
 	}
 	SDL_Rect dest_rect = { 0, 80, window_width / 3, window_height / 1.2 };*/
 	std::string secretword = "CURRENT WORD: " + secretWord;
-	std::string correctguesses = "CORRECT GUESSES " + correctChars;
+	std::string correctguesses = "CORRECT GUESSES: " + correctChars;
 	std::string incorrectguesses = "INCORRECT GUESSES: " + incorrectChars;
 	std::string status;
 	if (secretWord == word) {
 		//cout << endl << "Well done :D   The word is: " << word << endl;
 		//status = "Well done :D   The word is: " + word;
-		SDL_Texture* statusTexture = LoadFontTexture(grenderer, "intro.ttf", 30, status.c_str(), { 255,255,255,255 });
-		SDL_Texture* secrectwordTexture = LoadFontTexture(grenderer, "intro.ttf", 30, secretword.c_str(), { 255, 255, 255, 255 });
-		SDL_Texture* incorrectGuessesTexture = LoadFontTexture(grenderer, "intro.ttf", 30, incorrectguesses.c_str(), { 255, 255, 255, 255 });
+		SDL_Texture* statusTexture = LoadFontTexture(grenderer, "secretword.ttf", 30, status.c_str(), { 255,255,255,255 });
+		SDL_Texture* secrectwordTexture = LoadFontTexture(grenderer, "secretword.ttf", 50, secretword.c_str(), { 255, 255, 255, 255 });
+		SDL_Texture* incorrectGuessesTexture = LoadFontTexture(grenderer, "secretword.ttf", 30, incorrectguesses.c_str(), { 255, 255, 255, 255 });
 		int textWidth, textHeight;
 		SDL_QueryTexture(statusTexture, NULL, NULL, &textWidth, &textHeight);
 		SDL_Rect statusrect = getSDLRect(100, 400, textWidth, textHeight);
 		SDL_RenderCopy(grenderer, statusTexture, NULL, &statusrect);
 		SDL_QueryTexture(secrectwordTexture, NULL, NULL, &textWidth, &textHeight);
-		SDL_Rect secretwordrect = getSDLRect(150, 870, textWidth, textHeight);
+		SDL_Rect secretwordrect = getSDLRect((window_width - textWidth) / 2, (window_height - textHeight) / 2, textWidth, textHeight);
 		SDL_RenderCopy(grenderer, secrectwordTexture, NULL, &secretwordrect);
 		SDL_QueryTexture(incorrectGuessesTexture, NULL, NULL, &textWidth, &textHeight);
-		SDL_Rect incorrectGuessrect = getSDLRect(150, 900, textWidth, textHeight);
+		SDL_Rect incorrectGuessrect = getSDLRect(10, window_height - (window_height - textHeight - 20), textWidth, textHeight);
 		SDL_RenderCopy(grenderer, incorrectGuessesTexture, NULL, &incorrectGuessrect);
 		SDL_RenderPresent(grenderer);
 		//pressAnyKeyToContinue();
@@ -91,46 +91,46 @@ void printStats(const std::string& word, const std::string& secretWord,
 	else if (incorrectGuess == MAX_MISTAKES - 1) {
 		//cout << endl << "You lose :(   The word is: " << word << endl;
 		//status = "You lose :(   The word is: " + word;
-		SDL_Texture* statusTexture = LoadFontTexture(grenderer, "intro.ttf", 30, status.c_str(), { 255,255,255,255 });
-		SDL_Texture* secrectwordTexture = LoadFontTexture(grenderer, "intro.ttf", 30, secretword.c_str(), { 255, 255, 255, 255 });
-		SDL_Texture* incorrectGuessesTexture = LoadFontTexture(grenderer, "intro.ttf", 30, incorrectguesses.c_str(), { 255, 255, 255, 255 });
+		 secretword = "CURRENT WORD: " + word;
+		SDL_Texture* statusTexture = LoadFontTexture(grenderer, "secretword.ttf", 30, status.c_str(), { 255,255,255,255 });
+		SDL_Texture* secrectwordTexture = LoadFontTexture(grenderer, "secretword.ttf", 60, secretword.c_str(), { 255, 255, 255, 255 });
+		SDL_Texture* incorrectGuessesTexture = LoadFontTexture(grenderer, "secretword.ttf", 30, incorrectguesses.c_str(), { 255, 255, 255, 255 });
 		int textWidth, textHeight;
 		SDL_QueryTexture(statusTexture, NULL, NULL, &textWidth, &textHeight);
 		SDL_Rect statusrect = getSDLRect(100, 400, textWidth, textHeight);
 		SDL_RenderCopy(grenderer, statusTexture, NULL, &statusrect);
 		SDL_QueryTexture(secrectwordTexture, NULL, NULL, &textWidth, &textHeight);
-		SDL_Rect secretwordrect = getSDLRect(150, 870, textWidth, textHeight);
+		SDL_Rect secretwordrect = getSDLRect((window_width-textWidth) / 2 , (window_height-textHeight) / 2, textWidth, textHeight);
 		SDL_RenderCopy(grenderer, secrectwordTexture, NULL, &secretwordrect);
 		SDL_QueryTexture(incorrectGuessesTexture, NULL, NULL, &textWidth, &textHeight);
-		SDL_Rect incorrectGuessrect = getSDLRect(150, 900, textWidth, textHeight);
-		SDL_RenderCopy(grenderer, incorrectGuessesTexture, NULL, &incorrectGuessrect);
+		SDL_Rect correctGuessrect = getSDLRect(10, window_height - (window_height - textHeight - 20), textWidth, textHeight);
+		SDL_RenderCopy(grenderer, incorrectGuessesTexture, NULL, &correctGuessrect);
 		SDL_RenderPresent(grenderer);
-		//pressAnyKeyToContinue();
 	}
 	else {
 		//cout << endl << "Choose a character: ";
 		//status = "Choose a character: ";
 		status = incorrectguesses;
 
-		SDL_Texture* textTexture = LoadFontTexture(grenderer, "intro.ttf", 50, "PLEASE ENTER YOUR GUESS!", { 255, 165, 0, 255 });
+		SDL_Texture* textTexture = LoadFontTexture(grenderer, "secretword.ttf", 50, "PLEASE ENTER YOUR GUESS!", { 255, 165, 0, 255 });
 		int textureWidth, textureHeight;
 		SDL_QueryTexture(textTexture, NULL, NULL, &textureWidth, &textureHeight);
-		SDL_Rect textRect = { (window_width - textureWidth) / 2+100, (window_height - textureHeight) / 2, textureWidth, textureHeight };
+		SDL_Rect textRect = { (window_width - textureWidth) / 2+30, (window_height - textureHeight) / 2-90, textureWidth, textureHeight };
 		SDL_RenderCopy(grenderer, textTexture, NULL, &textRect);
 		//SDL_RenderPresent(grenderer);
-		SDL_Texture* statusTexture = LoadFontTexture(grenderer, "intro.ttf", 30, status.c_str(), { 255, 174, 174,255 });
-		SDL_Texture* secrectwordTexture = LoadFontTexture(grenderer, "intro.ttf",30 , secretword.c_str(), { 255, 255, 255, 255 });
-		SDL_Texture* correctGuessesTexture = LoadFontTexture(grenderer, "intro.ttf", 30, correctguesses.c_str(), { 255, 255, 255, 255 });
+		SDL_Texture* statusTexture = LoadFontTexture(grenderer, "secretword.ttf", 30, status.c_str(), { 255, 174, 174,255 });
+		SDL_Texture* secrectwordTexture = LoadFontTexture(grenderer, "secretword.ttf",40 , secretword.c_str(), { 255, 255, 255, 255 });
+		SDL_Texture* correctGuessesTexture = LoadFontTexture(grenderer, "secretword.ttf", 30, correctguesses.c_str(), { 255, 255, 255, 255 });
 		int textWidth, textHeight;
 		SDL_QueryTexture(statusTexture, NULL, NULL, &textWidth, &textHeight);
-		SDL_Rect statusrect = getSDLRect(10,window_height-( window_height-textHeight-20), textWidth, textHeight);
+		SDL_Rect statusrect = getSDLRect(10,window_height-textHeight-20, textWidth, textHeight);
 		SDL_RenderCopy(grenderer, statusTexture, NULL, &statusrect);
 		SDL_QueryTexture(secrectwordTexture, NULL, NULL, &textWidth, &textHeight);
-		SDL_Rect secretwordrect = getSDLRect(150, 870, textWidth, textHeight);
+		SDL_Rect secretwordrect = getSDLRect(window_width / 2-200, window_height / 2+190, textWidth, textHeight);
 		SDL_RenderCopy(grenderer, secrectwordTexture, NULL, &secretwordrect);
 		SDL_QueryTexture(correctGuessesTexture, NULL, NULL, &textWidth, &textHeight);
-		SDL_Rect incorrectGuessrect = getSDLRect(150, 900, textWidth, textHeight);
-		SDL_RenderCopy(grenderer, correctGuessesTexture, NULL, &incorrectGuessrect);
+		SDL_Rect correctGuessrect = getSDLRect(10, window_height - (window_height - textHeight - 20), textWidth, textHeight);
+		SDL_RenderCopy(grenderer, correctGuessesTexture, NULL, &correctGuessrect);
 	}
 }
 
@@ -156,13 +156,13 @@ void printScreen(const std::string& word, const std::string& secretWord,
 	for (int i = 0; i < 8; i++) {
 		guess[i] = loadTexture(Draw(i + 1), grenderer);
 	}
-	SDL_Rect dest_rect = { 0, 80, window_width / 3, window_height / 1.2 };
+	SDL_Rect dest_rect = { 50, 90, window_width / 3.5, window_height / 1.2 };
 	SDL_Texture* bg = loadTexture("background.bmp", grenderer);
 	std::string S = " ENTERED CHARs:" + Enterchars;
-	SDL_Texture* Enterchar = LoadFontTexture(grenderer, "Sigmar.ttf", 40, S.c_str(), { 0, 255, 0, 255});
+	SDL_Texture* Enterchar = LoadFontTexture(grenderer, "secretword.ttf", 40, S.c_str(), { 0, 255, 0, 255});
 	int charwidth, charheight;
 	SDL_QueryTexture(Enterchar, NULL, NULL, &charwidth, &charheight);
-	SDL_Rect charsrect = getSDLRect(window_width-charwidth-5,window_height-charheight-6, charwidth, charheight);
+	SDL_Rect charsrect = getSDLRect(window_width-charwidth-20,window_height-charheight-10, charwidth, charheight);
 	SDL_RenderCopy(grenderer, bg, NULL, NULL);
 	SDL_RenderCopy(grenderer, guess[incorrectGuess], NULL, &dest_rect);
 	SDL_RenderCopy(grenderer, Enterchar, NULL, &charsrect);
@@ -258,16 +258,16 @@ void outro(SDL_Renderer* renderer,std::string word, std::string secrectWord, boo
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 		 
 		 s = "Sorry! you lose, the word is " + word;
-		 SDL_Texture* textTexture = LoadFontTexture(renderer, "intro.ttf", 55, s.c_str(), { 255, 165, 0, 255 });
+		 SDL_Texture* textTexture = LoadFontTexture(renderer, "secretword.ttf", 50, s.c_str(), { 255, 165, 0, 255 });
 		 int textureWidth, textureHeight;
 		 SDL_QueryTexture(textTexture, NULL, NULL, &textureWidth, &textureHeight);
-		 SDL_Rect textRect = { (window_width - textureWidth) / 2 + 100, (window_height - textureHeight) / 2 - 150, textureWidth, textureHeight };
-		 SDL_Texture* text = LoadFontTexture(renderer, "intro.ttf", 50, "Do you want to replay?", { 255, 165, 0, 255 });
+		 SDL_Rect textRect = { (window_width - textureWidth) / 2 + 150, (window_height - textureHeight) / 2 - 150, textureWidth, textureHeight };
+		 SDL_Texture* text = LoadFontTexture(renderer, "secretword.ttf", 50, "Do you want to replay?", { 255, 165, 0, 255 });
 		 SDL_QueryTexture(text, NULL, NULL, &textureWidth, &textureHeight);
 		 SDL_Rect textR = { (window_width - textureWidth) / 2 + 50, (window_height - textureHeight) / 2 + 50 , textureWidth, textureHeight };
 		 SDL_Texture* yes = loadTexture("yes.jpg", renderer);
 		 SDL_QueryTexture(yes, NULL, NULL, &textureWidth, &textureHeight);
-		 SDL_Rect yesRect = getSDLRect(window_width / 2 + 30, window_height / 2 + 90, textureWidth / 2, textureHeight / 2);
+		 SDL_Rect yesRect = getSDLRect(window_width / 2 + 50, window_height / 2 + 90, textureWidth / 2, textureHeight / 2);
 		 SDL_Texture* no = loadTexture("no.png", renderer);
 		 SDL_QueryTexture(no, NULL, NULL, &textureWidth, &textureHeight);
 		 SDL_Rect noRect = getSDLRect(window_width / 2 - 190, window_height / 2 + 90, textureWidth, textureHeight);
@@ -286,6 +286,7 @@ void outro(SDL_Renderer* renderer,std::string word, std::string secrectWord, boo
 		 playMusic("losesound.wav", 0);
 		 Uint32 lastFrameTime = SDL_GetTicks();
 		 bool quit = false;
+		 bool mouseOverButton = false;
 		 while (!quit) {
 			 SDL_Event event;
 			 while (SDL_PollEvent(&event)) {
@@ -299,49 +300,68 @@ void outro(SDL_Renderer* renderer,std::string word, std::string secrectWord, boo
 						 mouseY >= noRect.y && mouseY < noRect.y + noRect.h) {
 						 quit = true;
 						 iscontinue = false;
+						 playMusic("click.wav", 0);
 					 }
 					 if (mouseX >= yesRect.x && mouseX < yesRect.x + yesRect.w &&
 						 mouseY >= yesRect.y && mouseY < yesRect.y + yesRect.h) {
 						 quit = true;
 						 iscontinue = true;
+						 playMusic("click.wav", 0);
 					 }
 				 }
+				 /*else if (event.type == SDL_MOUSEMOTION) {
+					 int mouseX, mouseY;
+					 SDL_Rect buttonRect = yesRect;
+					 SDL_GetMouseState(&mouseX, &mouseY);
+					 if (mouseX >= buttonRect.x && mouseX < buttonRect.x + buttonRect.w &&
+						 mouseY >= buttonRect.y && mouseY < buttonRect.y + buttonRect.h) {
+						 if (!mouseOverButton) {
+							 mouseOverButton = true;
+							 for (int i = 2; i < 7; i++) {
+								 SDL_Rect outline = getSDLRect(buttonRect.x - 6 + i, buttonRect.y - 6 + i, buttonRect.w + 2 + i, buttonRect.h + 5 + i);
+								 SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
+								 SDL_RenderDrawRect(renderer, &outline);
+								 SDL_RenderPresent(renderer);
+							 }
+						 }
+					 }
+					 else {
+						 if (mouseOverButton) {
+							 mouseOverButton = false;
+							 for (int i = 2; i < 7; i++) {
+								 SDL_Rect fillRect = getSDLRect(buttonRect.x - 6 + i, buttonRect.y - 6 + i, buttonRect.w + 2 + i, buttonRect.h + 5 + i);
+								 SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+								 SDL_RenderDrawRect(renderer, &fillRect);
+								 SDL_RenderPresent(renderer);
+							 }
+						 }
+					 }
+				 }*/
 			 }
 			 Uint32 currentTime = SDL_GetTicks();
 			 if (currentTime - lastFrameTime >= frameDelay) {
 				 lastFrameTime = currentTime;
 				 SDL_RenderClear(renderer);
-				 
-				 SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
-				 SDL_RenderCopy(renderer, text, NULL, &textR);
 				 SDL_RenderCopy(renderer, frames[currentFrame], NULL, &destRect);
 				 SDL_RenderCopy(renderer, yes, NULL, &yesRect);
 				 SDL_RenderCopy(renderer, no, NULL, &noRect);
+				 SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
+				 SDL_RenderCopy(renderer, text, NULL, &textR);
+				 
 				 SDL_RenderPresent(renderer);
 				 currentFrame = (currentFrame + 1) % numFrames;
 			 }
 			 
 		 }
-		 /*SDL_Texture* textTexture = LoadFontTexture(renderer, "intro.ttf", 50, s.c_str(), { 255, 165, 0, 255 });
-		 int textureWidth, textureHeight;
-		 SDL_QueryTexture(textTexture, NULL, NULL, &textureWidth, &textureHeight);
-		 SDL_Rect textRect = { (window_width - textureWidth) / 2 + 100, (window_height - textureHeight) / 2, textureWidth, textureHeight };
-		 SDL_Texture* text = LoadFontTexture(renderer, "intro.ttf", 50, "Do you want to replay?", { 255, 165, 0, 255 });
-		 SDL_QueryTexture(text, NULL, NULL, &textureWidth, &textureHeight);
-		 SDL_Rect textR = { (window_width - textureWidth) / 2 + 50, (window_height - textureHeight) / 2 + 50, textureWidth, textureHeight };
-		 SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
-		 SDL_RenderCopy(renderer, text, NULL, &textR);*/
-		
-		 //createLoseAnimation(renderer);
 	}
 	else {
 		playMusic("winsound.wav", 0);
 		s = "Congratulations! you win, the word is " + word;
-		SDL_Texture* textTexture = LoadFontTexture(renderer, "intro.ttf", 50, s.c_str(), { 255, 165, 0, 255 });
+		SDL_Texture* textTexture = LoadFontTexture(renderer, "secretword.ttf", 40, s.c_str(), { 255, 165, 0, 255 });
 		int textureWidth, textureHeight;
 		SDL_QueryTexture(textTexture, NULL, NULL, &textureWidth, &textureHeight);
-		SDL_Rect textRect = { (window_width - textureWidth) / 2 + 100, (window_height - textureHeight) / 2, textureWidth, textureHeight };
-		SDL_Texture* text = LoadFontTexture(renderer, "intro.ttf", 50, "Do you want to replay?", { 255, 165, 0, 255 });
+		SDL_Rect textRect = { (window_width - textureWidth) / 2 + 100, (window_height - textureHeight) / 2-50, textureWidth, textureHeight };
+		SDL_Texture* text = LoadFontTexture(renderer, "secretword.ttf", 50, "Do you want to replay?", { 255, 165, 0, 255 });
 		SDL_QueryTexture(text, NULL, NULL, &textureWidth, &textureHeight);
 		SDL_Rect textR = { (window_width - textureWidth) / 2 + 50, (window_height - textureHeight) / 2 + 50, textureWidth, textureHeight };
 		SDL_Texture* yes = loadTexture("yes.jpg", renderer);
@@ -359,10 +379,10 @@ void outro(SDL_Renderer* renderer,std::string word, std::string secrectWord, boo
 		int frameDelay = 1000 / frameRate;
 		SDL_QueryTexture(frames[0], NULL, NULL, &frameWidth, &frameHeight);
 		SDL_Rect srcRect = { 0, 0, frameWidth, frameHeight };
-		SDL_Rect destRect = { startX, startY, frameWidth * 4, frameHeight * 4 };
+		SDL_Rect destRect = { startX, startY, frameWidth * 3.5, frameHeight * 3.5 };
 		Uint32 lastFrameTime = SDL_GetTicks();
 		bool quit = false;
-
+		bool mouseOverButton = false;
 		while (!quit) {
 			SDL_Event event;
 			while (SDL_PollEvent(&event)) {
@@ -377,13 +397,16 @@ void outro(SDL_Renderer* renderer,std::string word, std::string secrectWord, boo
 						mouseY >= noRect.y && mouseY < noRect.y + noRect.h) {
 						quit = true;
 						iscontinue = false;
+						playMusic("click.wav", 0);
 					}
 					if (mouseX >= yesRect.x && mouseX < yesRect.x + yesRect.w &&
 						mouseY >= yesRect.y && mouseY < yesRect.y + yesRect.h) {
 						quit = true;
 						iscontinue = true;
+						playMusic("click.wav", 0);
 					}
 				}
+				
 			}
 			Uint32 currentTime = SDL_GetTicks();
 			if (currentTime - lastFrameTime >= frameDelay) {
