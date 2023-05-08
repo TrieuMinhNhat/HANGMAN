@@ -1,5 +1,7 @@
 # <center>HANGMAN</center>
-
+## Lập Trình Nâng Cao
+* Triệu Minh Nhật
+* 22021214 - K67CB
 ## Giới thiệu
 - Đây là game HangMan (người treo cổ) - trò chơi đầu tiên do mình tạo ra.
 - Hangman được biết đến là một tựa game dùng để học từ mới, đoán các câu mà được nạp sẵn trong một file văn bản.
